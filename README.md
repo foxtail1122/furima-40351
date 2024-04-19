@@ -1,6 +1,6 @@
 # README
 
-# user table
+# users table
 
 | Column             | Type   | Options     |
 | ------------------ | ------ | ----------- |
@@ -16,19 +16,19 @@
 ### Association
 
 - has_many :items
-- has_many :orders
+  has_many :item_orders
 
-## item table
+## items table
 
 | Column      | Type        | Options     |
 | ----------- | ----------- | ----------- |
-| image       | text        | null: false |
 | title       | string      | null: false |
 | introduction| text        | null: false |
 | category_id | integer     | null: false |
 | condition_id| integer     | null: false |
 | fee_id      | integer     | null: false |
 | place_id    | integer     | null: false |
+| day_id      | integer     | null: false |
 | price       | integer     | null: false |
 | user        | references  | null: false, foreign_key: true |
 
@@ -36,23 +36,33 @@
 
 - belongs_to :user
 - has_one :order
+- has_many :item_orders
 
 
-
-## order table
+## orders table
 
 | Column       | Type       | Options                        |
 | -------      | ---------- | ------------------------------ |
 | postal_code  | string     | null: false                    |
 | prefecture_id| integer    | null: false                    |
 | city         | string     | null: false                    |
-| address      | text       | null: false                    |
-| building_name| text       | null: false                    |
-| phone_number | string     | null: false,                   |
-| user         | references | null: false, foreign_key: true |
-| item         | references | null: false, foreign_key: true |
+| address      | string     | null: false                    |
+| building_name| string     |                                |
+| phone_number | string     | null: false                    |
 
 ### Association
 
 - belongs_to :item
+- has_many :item_orders
+
+## item_orders table
+
+| Column       | Type       | Options                        |
+| -------      | ---------- | ------------------------------ |
+| user         | references | null: false, foreign_key: true |
+| item         | references | null: false, foreign_key: true |
+
+
 - belongs_to :user
+- belongs_to :item
+- belongs_to :order
