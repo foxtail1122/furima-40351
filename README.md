@@ -35,7 +35,6 @@
 ### Association
 
 - belongs_to :user
-- has_one :order
 - has_many :item_orders
 
 
@@ -51,9 +50,7 @@
 | phone_number | string     | null: false                    |
 
 ### Association
-
-- belongs_to :item
-- has_many :item_orders
+belongs_to :item_order
 
 ## item_orders table
 
@@ -63,6 +60,6 @@
 | item         | references | null: false, foreign_key: true |
 
 
-- belongs_to :user
+- has_one :order
 - belongs_to :item
 - belongs_to :order
