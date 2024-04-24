@@ -1,7 +1,5 @@
 class ItemsController < ApplicationController
-
-  before_action :set_item, only: [:edit, :show]
-  before_action :move_to_index, except: [:index, :show]
+  before_action :authenticate_user!, only: :new
 
   def index
     @items = Item.all
@@ -9,42 +7,23 @@ class ItemsController < ApplicationController
 
   def new
     @item = Item.new
+    unless user_signed_in?
+      redirect_to new_user_session_path
+    end
   end
 
   def create
-    Item.create(item_params)
-    redirect_to '/'
+    @item = Item.new(item_params)
+    if @item.save
+      redirect_to root_path
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
-  def destroy
-    item = Item.find(params[:id])
-    item.destroy
-    redirect_to root_path
-  end
-
-  def edit
-  end
-
-  def update
-    item = Item.find(params[:id])
-    item.update(item_params)
-    redirect_to root_path
-  end
-
-  def show
-  end
 
   private
   def item_params
-    params.require(:item).permit(:title, :introduction, :price)
+    params.require(:item).permit(:title, :image, :introduction, :category_id, :condition_id, :fee_id, :place_id, :price, :day_id).merge(user_id: current_user.id)
   end
-
-  def set_item
-    @item = Item.find(params[:id])
-  end
-
-  def move_to_index
-    unless user_signed_in?
-      redirect_to action: :index
-    end
-  end
+end
