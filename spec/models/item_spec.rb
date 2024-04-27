@@ -9,12 +9,13 @@ RSpec.describe Item, type: :model do
       it '正常に登録できるとき' do
         expect(@item).to be_valid
       end
-      it 'ログイン状態のユーザーのみ、商品出品ページへ遷移できること' do
-        @item = FactoryBot.create(:user)
-        expect(@item).to be_valid
-      end
     end
     context '出品ができない時' do
+      it 'ユーザーが紐づいてなければ出品できない' do
+        @item.user = nil
+        @item.valid?
+        expect(@item.errors.full_messages).to include("User must exist")
+      end
       it '商品画像を1枚つけることが必須であること' do
         @item.image.key = ''
         @item.valid?
@@ -34,31 +35,31 @@ RSpec.describe Item, type: :model do
       end
 
       it 'カテゴリーの情報が必須であること' do
-        @item.category_id = ''
+        @item.category_id = 1
         @item.valid?
         expect(@item.errors.full_messages).to include("Category can't be blank")
       end
 
       it '商品の状態についての情報が必須であること' do
-        @item.condition_id = ''
+        @item.condition_id = 1
         @item.valid?
         expect(@item.errors.full_messages).to include("Condition can't be blank")
       end
 
       it '配送料の負担についての情報が必須であること' do
-        @item.fee_id = ''
+        @item.fee_id = 1
         @item.valid?
         expect(@item.errors.full_messages).to include("Fee can't be blank")
       end
 
       it '発送元の地域についての情報が必須であること' do
-        @item.place_id = ''
+        @item.place_id = 1
         @item.valid?
         expect(@item.errors.full_messages).to include("Place can't be blank")
       end
 
       it '発送までの日数についての情報が必須であること' do
-        @item.day_id = ''
+        @item.day_id = 1
         @item.valid?
         expect(@item.errors.full_messages).to include("Day can't be blank")
       end
