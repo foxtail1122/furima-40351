@@ -1,5 +1,6 @@
 class ItemsController < ApplicationController
-  # before_action :set_item, only: [:show]
+  before_action :authenticate_user!, except: [:index, :show]
+   # before_action :set_item, only: [:show]
 
   def index
     @items = Item.all.order(created_at: :desc)
@@ -7,9 +8,6 @@ class ItemsController < ApplicationController
 
   def new
     @item = Item.new
-    return if user_signed_in?
-
-    redirect_to new_user_session_path
   end
 
   def create
