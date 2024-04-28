@@ -129,15 +129,15 @@
     <ul class='item-lists'>
     <% @items.each do |item| %>
       <li class='list'>
-          <%# = link_to item_path(item) do %>
+          <%= link_to item_path(item) do %>
           <div class='item-img-content'>
             <%= image_tag item.image.variant(resize: '500x500'), class: "item-img" if item.image.attached? %>
 
-            <% if @items.present? %>
+            <%# if item.order != nil %>
             <div class='sold-out'>
             <span>Sold Out!!</span>
             </div>
-            <% end %>
+            <%# end %>
 
           </div>
           <div class='item-info'>
@@ -152,7 +152,7 @@
               </div>
             </div>
           </div>
-          <%# end %>
+          <% end %>
       </li>
       <% end %>
     <% if @items.blank? then %>

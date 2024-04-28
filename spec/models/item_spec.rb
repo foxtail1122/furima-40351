@@ -14,12 +14,12 @@ RSpec.describe Item, type: :model do
       it 'ユーザーが紐づいてなければ出品できない' do
         @item.user = nil
         @item.valid?
-        expect(@item.errors.full_messages).to include("User must exist")
+        expect(@item.errors.full_messages).to include('User must exist')
       end
       it '商品画像を1枚つけることが必須であること' do
         @item.image.key = ''
         @item.valid?
-        expect(@item.errors.full_messages).to include{"Image can't be blank"}
+        expect(@item.errors.full_messages).to(include { "Image can't be blank" })
       end
 
       it '商品名が必須であること' do
@@ -72,17 +72,17 @@ RSpec.describe Item, type: :model do
       it '価格は￥299以下の場合は登録できない' do
         @item.price = '299'
         @item.valid?
-        expect(@item.errors.full_messages).to include ("Price is invalid")
+        expect(@item.errors.full_messages).to include('Price is invalid')
       end
       it '価格は￥1,000,000以上の場合は登録できない' do
         @item.price = '10000000'
         @item.valid?
-        expect(@item.errors.full_messages).to include ("Price is invalid")
+        expect(@item.errors.full_messages).to include('Price is invalid')
       end
       it '価格は半角数値でなければ登録できない' do
         @item.price = 'ああああ'
         @item.valid?
-        expect(@item.errors.full_messages).to include "Price is invalid"
+        expect(@item.errors.full_messages).to include 'Price is invalid'
       end
     end
   end

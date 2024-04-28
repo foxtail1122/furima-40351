@@ -1,5 +1,6 @@
 class ItemsController < ApplicationController
-
+  before_action :authenticate_user!, except: [:index, :show]
+   # before_action :set_item, only: [:show]
 
   def index
     @items = Item.all.order(created_at: :desc)
@@ -7,9 +8,6 @@ class ItemsController < ApplicationController
 
   def new
     @item = Item.new
-    unless user_signed_in?
-      redirect_to new_user_session_path
-    end
   end
 
   def create
@@ -21,9 +19,18 @@ class ItemsController < ApplicationController
     end
   end
 
+  def show
+    @item = Item.find(params[:id])
+  end
 
   private
+
   def item_params
-    params.require(:item).permit(:title, :image, :introduction, :category_id, :condition_id, :fee_id, :place_id, :price, :day_id).merge(user_id: current_user.id)
+    params.require(:item).permit(:title, :image, :introduction, :category_id, :condition_id, :fee_id, :place_id, :price,
+                                 :day_id).merge(user_id: current_user.id)
   end
+
+  # def set_item
+  # @item = Item.find(params[:id])
+  # end
 end
