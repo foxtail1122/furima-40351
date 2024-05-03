@@ -2,6 +2,10 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  has_many :items
+  has_many :item_orders
+
+
   with_options presence: true do
     validates :nickname, :birthday
     validates :last_name, format: { with: /\A[ぁ-んァ-ン一-龥々ー]+\z/, message: 'must be Full-width characters', allow_blank: true }
