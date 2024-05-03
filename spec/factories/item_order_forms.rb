@@ -1,7 +1,5 @@
 FactoryBot.define do
   factory :item_order_form do
-    user_id { FactoryBot.create(:user).id }
-    item_id { FactoryBot.create(:item).id }
     token { 'tok_abcdefghijk00000000000000000' }
     postal_code   { '123-4567' }
     prefecture_id { 2 }
