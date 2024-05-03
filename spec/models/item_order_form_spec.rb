@@ -40,7 +40,12 @@ RSpec.describe ItemOrderForm, type: :model do
       expect(@item_order_form.errors.full_messages).to include("Postal code can't be blank")
     end
     it '郵便番号はハイフンが含まれなければならない' do
-      @item_order_form.postal_code = 2_222_222
+      @item_order_form.postal_code = '2222222'
+      @item_order_form.valid?
+      expect(@item_order_form.errors.full_messages).to include('Postal code is invalid. Include hyphen(-)')
+    end
+    it '郵便番号は半角数字以外が含まれている場合(4番めのハイフンは除く)は保存できない' do
+      @item_order_form.postal_code = '222-222a'
       @item_order_form.valid?
       expect(@item_order_form.errors.full_messages).to include('Postal code is invalid. Include hyphen(-)')
     end
@@ -65,12 +70,17 @@ RSpec.describe ItemOrderForm, type: :model do
       expect(@item_order_form.errors.full_messages).to include("Phone number can't be blank")
     end
     it '電話番号が9桁以下であれば保存できない' do
-      @item_order_form.phone_number = 102_020_202
+      @item_order_form.phone_number = '102020202'
       @item_order_form.valid?
       expect(@item_order_form.errors.full_messages).to include('Phone number is invalid')
     end
     it '電話番号が12桁以上であれば保存できない' do
-      @item_order_form.phone_number = 102_020_202_023
+      @item_order_form.phone_number = '102020202023'
+      @item_order_form.valid?
+      expect(@item_order_form.errors.full_messages).to include('Phone number is invalid')
+    end
+    it '電話番号に半角数字以外が含まれている場合は保存できない' do
+      @item_order_form.phone_number = '102020202あ'
       @item_order_form.valid?
       expect(@item_order_form.errors.full_messages).to include('Phone number is invalid')
     end
